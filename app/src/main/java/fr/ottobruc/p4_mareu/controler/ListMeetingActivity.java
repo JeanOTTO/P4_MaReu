@@ -1,10 +1,12 @@
-package fr.ottobruc.p4_mareu;
+package fr.ottobruc.p4_mareu.controler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import fr.ottobruc.p4_mareu.R;
+
+public class ListMeetingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
