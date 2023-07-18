@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">P4_MaReu</string>
+    <string name="add_meeting">Ajouter la réunion</string>
+    <string name="participants">Participants</string>
+    <string name="room">Salle de réunion</string>
+    <string name="end_time">Heure fin</string>
+    <string name="start_time">Heure début</string>
+    <string name="date">Date de la réunion</string>
+    <string name="subject">Sujet de la réunion</string>
+    <string name="add_subject">Sujet de la réunion</string>
+    <string name="add_date">Date de la réunion</string>
+    <string name="add_starttime">Commence à …</string>
+    <string name="add_endtime">Finie à …</string>
+    <string name="add_room">Selection de la salle</string>
+    <string name="add_buttoncreate">Creer la réunion</string>
+    <string name="add_buttonparticipant">+</string>
+    <string name="err_add_subject">Veuillez entrer un sujet</string>
+    <string name="err_add_date">Veuillez sélectionner une date</string>
+    <string name="err_add_starttime">Veuillez sélectionner une heure de début</string>
+    <string name="err_add_endtime">Veuillez sélectionner une salle</string>
+    <string name="err_add_participant">Veuillez entrer au moins un participant</string>
+    <string name="add_meetingcreate">Réunion créée !</string>
+    <string name="err_add_booked">La salle sélectionnée est déjà réservée pour l\'intervalle de temps choisi</string>
+    <string name="err_add_emailformat">Format d\'adresse e-mail invalide</string>
+    <string name="err_add_userAlreadyAdded">Participant déjà ajouté</string>
 </resources>

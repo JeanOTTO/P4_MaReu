@@ -1,15 +1,11 @@
 package fr.ottobruc.p4_mareu.controler;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import java.util.List;
-
 import fr.ottobruc.p4_mareu.databinding.ActivityListmeetingBinding;
 import fr.ottobruc.p4_mareu.di.DI;
 import fr.ottobruc.p4_mareu.model.Meeting;
@@ -37,6 +33,13 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
         adapter = new MeetingAdapter(meetings, this);
         binding.meetingRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
         binding.meetingRecyclerView.setAdapter(adapter);
+        binding.createMeeting.setOnClickListener(v -> AddMeetingActivity.navigate(this));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initList();
     }
 
     public void onClickDelete(Meeting meeting) {
