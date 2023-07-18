@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import fr.ottobruc.mareu.utils.DateTimeUtil;
+import fr.ottobruc.p4_mareu.utils.DateTimeUtil;
 
 public class Meeting {
     private int id;
