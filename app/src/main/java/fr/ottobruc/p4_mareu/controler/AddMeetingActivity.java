@@ -1,4 +1,5 @@
 package fr.ottobruc.p4_mareu.controler;
+
 import static fr.ottobruc.p4_mareu.utils.DateTimeUtil.isTimeConflict;
 
 import android.app.DatePickerDialog;
@@ -12,9 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +34,10 @@ import fr.ottobruc.p4_mareu.model.Room;
 import fr.ottobruc.p4_mareu.model.User;
 import fr.ottobruc.p4_mareu.repository.MeetingRepository;
 
-public class AddMeetingActivity extends AppCompatActivity  {
+/**
+ * This activity allows users to add a new meeting by selecting a date, time, room, and participants.
+ */
+public class AddMeetingActivity extends AppCompatActivity {
     private ActivityAddMeetingBinding binding;
     private MeetingRepository meetingRepository;
     private List<Room> availableRooms;
@@ -58,28 +64,31 @@ public class AddMeetingActivity extends AppCompatActivity  {
         setupAddParticipantButton();
         setupCreateMeetingButton();
     }
+
+    /**
+     * Sets up the date picker dialog and handles the selection of the meeting date.
+     */
     private void setupDatePicker() {
         binding.dateEditText.setOnClickListener(v -> {
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH);
             int day = cal.get(Calendar.DAY_OF_MONTH);
-
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
                     cal.set(Calendar.YEAR, year);
                     cal.set(Calendar.MONTH, month);
                     cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     selectedDate = updateDate(cal, "date");
-                    if (selectedStartTime != null){
+                    if (selectedStartTime != null) {
                         cal.setTime(selectedStartTime);
-                        selectedStartTime = updateDate(cal,"time");}
-                    if (selectedEndTime != null){
+                        selectedStartTime = updateDate(cal, "time");
+                    }
+                    if (selectedEndTime != null) {
                         cal.setTime(selectedEndTime);
-                        selectedEndTime = updateDate(cal,"time");}
+                        selectedEndTime = updateDate(cal, "time");
+                    }
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     binding.dateEditText.setText(dateFormat.format(selectedDate));
@@ -94,20 +103,32 @@ public class AddMeetingActivity extends AppCompatActivity  {
             datePickerDialog.show();
         });
     }
+
+    /**
+     * Updates the selected date in the calendar based on the provided type.
+     *
+     * @param cal  the Calendar instance to update
+     * @param type the type of update ("date" or "time")
+     * @return the updated Date object
+     */
     private Date updateDate(Calendar cal, String type) {
-        switch (type){
-            case "date" :
+        switch (type) {
+            case "date":
                 calendar.set(Calendar.YEAR, cal.get(Calendar.YEAR));
                 calendar.set(Calendar.MONTH, cal.get(Calendar.MONTH));
                 calendar.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
                 break;
-            case "time" :
+            case "time":
                 calendar.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
                 calendar.set(Calendar.MINUTE, cal.get(Calendar.MINUTE));
                 break;
         }
         return calendar.getTime();
     }
+
+    /**
+     * Opens a time picker dialog and handles the selection of the meeting start and end times.
+     */
     private void selectTime(String startEnd) {
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
@@ -118,11 +139,10 @@ public class AddMeetingActivity extends AppCompatActivity  {
                 cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 cal.set(Calendar.MINUTE, minute1);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                if (startEnd.equals("start")){
+                if (startEnd.equals("start")) {
                     selectedStartTime = updateDate(cal, "time");
                     binding.startTimeEditText.setText(timeFormat.format(selectedStartTime));
-                }
-                else if (startEnd.equals("end")){
+                } else if (startEnd.equals("end")) {
                     selectedEndTime = updateDate(cal, "time");
                     binding.endTimeEditText.setText(timeFormat.format(selectedEndTime));
                 }
@@ -142,6 +162,10 @@ public class AddMeetingActivity extends AppCompatActivity  {
 
         timePickerDialog.show();
     }
+
+    /**
+     * Sets up the time picker dialog and handles the selection of the meeting start and end times.
+     */
     private void setupTimePicker() {
         binding.startTimeEditText.setOnClickListener(v -> {
             selectTime("start");
@@ -150,20 +174,24 @@ public class AddMeetingActivity extends AppCompatActivity  {
             selectTime("end");
         });
     }
+
+    /**
+     * Sets up the email auto-complete functionality for the participant input field.
+     */
     private void setupEmailAutoComplete() {
-        // create an array adapter and pass the required parameter
-        // in our case pass the context, drop down layout , and array.
         List<String> listEmails = new ArrayList<>();
-        for (User user : meetingRepository.getUsers()){
+        for (User user : meetingRepository.getUsers()) {
             listEmails.add(user.getEmail());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, listEmails);
         binding.participantAutoCompleteTextview.setThreshold(0);
         binding.participantAutoCompleteTextview.setAdapter(adapter);
     }
+
+    /**
+     * Sets up the room selection spinner.
+     */
     private void setupRoomSpinner() {
-        // create an array adapter and pass the required parameter
-        // in our case pass the context, drop down layout , and array.
         ArrayAdapter<Room> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, availableRooms);
         binding.roomAutoCompleteTextview.setAdapter(adapter);
         binding.roomAutoCompleteTextview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -173,9 +201,12 @@ public class AddMeetingActivity extends AppCompatActivity  {
             }
         });
     }
+
+    /**
+     * Sets up the functionality of the "Add Participant" button.
+     */
     private void setupAddParticipantButton() {
         binding.addParticipantButton.setOnClickListener(v -> {
-            //String email = binding.participantEditText.getText().toString().trim();
             String email = binding.participantAutoCompleteTextview.getText().toString().trim();
             if (TextUtils.isEmpty(email) || !isValidEmail(email)) {
                 Toast.makeText(this, R.string.err_add_emailformat, Toast.LENGTH_SHORT).show();
@@ -190,12 +221,15 @@ public class AddMeetingActivity extends AppCompatActivity  {
             updateParticipantList();
         });
     }
+
+    /**
+     * Sets up the functionality of the "Create Meeting" button.
+     */
     private void setupCreateMeetingButton() {
         binding.createMeetingButton.setOnClickListener(v -> {
             if (!validateInput()) {
                 return;
             }
-
             String subject = binding.subjectEditText.getText().toString().trim();
             Meeting newMeeting = new Meeting(
                     0, // Assign a unique ID or generate one
@@ -206,7 +240,6 @@ public class AddMeetingActivity extends AppCompatActivity  {
                     subject,
                     getSelectedParticipants()
             );
-
             try {
                 if (isRoomAvailable(newMeeting)) {
                     meetingRepository.addMeeting(newMeeting);
@@ -220,42 +253,43 @@ public class AddMeetingActivity extends AppCompatActivity  {
             }
         });
     }
+
+    /**
+     * Validates the user input for creating a meeting.
+     *
+     * @return true if the input is valid, false otherwise
+     */
     private boolean validateInput() {
         boolean result;
-        //if (TextUtils.isEmpty(binding.subjectEditText.getText().toString().trim())) {
+        result = false;
         if ((binding.subjectEditText.getText().toString()).isEmpty()) {
-            //Toast.makeText(this, R.string.err_add_subject, Toast.LENGTH_SHORT).show();
             binding.subjectEditText.setError(getResources().getString(R.string.err_add_subject));
-            result = false;
         }
         if (selectedDate == null) {
-            //Toast.makeText(this, R.string.err_add_date, Toast.LENGTH_SHORT).show();
             binding.dateEditText.setError(getResources().getString(R.string.err_add_date));
-            result = false;
         }
         if (selectedStartTime == null) {
-            //Toast.makeText(this, R.string.err_add_starttime, Toast.LENGTH_SHORT).show();
             binding.startTimeEditText.setError(getResources().getString(R.string.err_add_starttime));
-            result = false;
         }
         if (selectedEndTime == null) {
-            //Toast.makeText(this, R.string.err_add_starttime, Toast.LENGTH_SHORT).show();
             binding.endTimeEditText.setError(getResources().getString(R.string.err_add_starttime));
-            result = false;
         }
         if (selectedRoom == null) {
-            //Toast.makeText(this, R.string.err_add_endtime, Toast.LENGTH_SHORT).show();
             binding.roomAutoCompleteTextview.setError(getResources().getString(R.string.err_add_endtime));
-            result = false;
         }
         if (participantEmails.isEmpty()) {
-            //Toast.makeText(this, R.string.err_add_participant, Toast.LENGTH_SHORT).show();
             binding.participantAutoCompleteTextview.setError(getResources().getString(R.string.err_add_participant));
-            result = false;
+        } else {
+            result = true;
         }
-        else result = true;
         return result;
     }
+
+    /**
+     * Retrieves the selected participants for the meeting.
+     *
+     * @return a list of User objects representing the selected participants
+     */
     private List<User> getSelectedParticipants() {
         List<User> participants = new ArrayList<>();
         for (String email : participantEmails) {
@@ -263,6 +297,10 @@ public class AddMeetingActivity extends AppCompatActivity  {
         }
         return participants;
     }
+
+    /**
+     * Updates the participant list view with the selected participants.
+     */
     private void updateParticipantList() {
         StringBuilder builder = new StringBuilder();
         int i = 0;
@@ -270,8 +308,8 @@ public class AddMeetingActivity extends AppCompatActivity  {
         for (String email : participantEmails) {
             i++;
             job = "";
-            for (User user : meetingRepository.getUsers()){
-                if(user.getEmail().equals(email)){
+            for (User user : meetingRepository.getUsers()) {
+                if (user.getEmail().equals(email)) {
                     job = " (" + user.getJob() + ")";
                 }
             }
@@ -279,12 +317,25 @@ public class AddMeetingActivity extends AppCompatActivity  {
         }
         binding.participantListTextView.setText(builder.toString());
     }
+
+    /**
+     * Validates if the given email is in a valid format.
+     *
+     * @param email the email address to validate
+     * @return true if the email is valid, false otherwise
+     */
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
+    /**
+     * Retrieves the list of available rooms based on the selected date and time.
+     *
+     * @return a list of available Room objects
+     * @throws ParseException if there is an error parsing the date or time
+     */
     private List<Room> getAvailableRooms() throws ParseException {
         List<Room> filteredRooms = new ArrayList<>(meetingRepository.getRooms());
-        // Filtrer les salles déjà réservées pour le créneau horaire sélectionné
         for (Meeting meeting : meetingRepository.getMeetings()) {
             if (isTimeConflict(selectedStartTime, selectedEndTime, meeting.getStartTime(), meeting.getEndTime())) {
                 filteredRooms.remove(meeting.getLocation());
@@ -292,8 +343,14 @@ public class AddMeetingActivity extends AppCompatActivity  {
         }
         return filteredRooms;
     }
+
+    /**
+     * Updates the room spinner with the list of available rooms based on the selected date and time.
+     *
+     * @throws ParseException if there is an error parsing the date or time
+     */
     private void updateRoomSpinner() throws ParseException {
-        if(selectedStartTime != null && selectedDate != null) {
+        if (selectedStartTime != null && selectedDate != null) {
             ArrayAdapter<Room> roomAdapter = (ArrayAdapter<Room>) binding.roomAutoCompleteTextview.getAdapter();
             roomAdapter.clear();
             availableRooms = getAvailableRooms();
@@ -301,10 +358,24 @@ public class AddMeetingActivity extends AppCompatActivity  {
             roomAdapter.notifyDataSetChanged();
         }
     }
+
+    /**
+     * Navigates to the AddMeetingActivity.
+     *
+     * @param activity the FragmentActivity
+     */
     public static void navigate(FragmentActivity activity) {
         Intent intent = new Intent(activity, AddMeetingActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
     }
+
+    /**
+     * Checks if the selected room is available for the meeting.
+     *
+     * @param newMeeting the new Meeting object to be checked
+     * @return true if the room is available, false otherwise
+     * @throws ParseException if there is an error parsing the date or time
+     */
     private boolean isRoomAvailable(Meeting newMeeting) throws ParseException {
         for (Meeting existingMeeting : meetingRepository.getMeetings()) {
             if (existingMeeting.getLocation().equals(newMeeting.getLocation()) &&
@@ -314,5 +385,4 @@ public class AddMeetingActivity extends AppCompatActivity  {
         }
         return true;
     }
-
 }

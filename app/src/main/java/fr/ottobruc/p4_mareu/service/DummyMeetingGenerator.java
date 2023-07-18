@@ -10,8 +10,14 @@ import fr.ottobruc.p4_mareu.model.Room;
 import fr.ottobruc.p4_mareu.model.User;
 import fr.ottobruc.p4_mareu.utils.Colors;
 
+/**
+ * A class for generating dummy data of Users, Rooms, and Meetings.
+ */
 public abstract class DummyMeetingGenerator {
 
+    /**
+     * A list of dummy user data.
+     */
     public static List<User> DUMMY_USERS = Arrays.asList(
             new User("Néo", "neo@lamzone.com", "Programmeur"),
             new User("Luke Skywalker", "luke@lamzone.com", "Jedi"),
@@ -29,8 +35,11 @@ public abstract class DummyMeetingGenerator {
             new User("Sarah Connor", "sarahconnor@lamzone.com", "Résistante"),
             new User("Frodon Sacquet", "frodo_bogoss@lamzone.com", "Hobbit"),
             new User("Romain", "romain@lamzone.com", "Mentor")
-
     );
+
+    /**
+     * A list of dummy room data.
+     */
     public static List<Room> DUMMY_ROOMS = Arrays.asList(
             new Room(1, "Mario", Colors.MARIO),
             new Room(2, "Luigi", Colors.LUIGI),
@@ -44,6 +53,9 @@ public abstract class DummyMeetingGenerator {
             new Room(10, "Toad", Colors.TOAD)
     );
 
+    /**
+     * A list of dummy meeting data.
+     */
     public static List<Meeting> DUMMY_MEETINGS;
 
     static {
@@ -64,15 +76,31 @@ public abstract class DummyMeetingGenerator {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Generates a list of dummy meeting data.
+     *
+     * @return a new ArrayList of meetings copied from DUMMY_MEETINGS.
+     */
     static List<Meeting> generateMeetings() {
         return new ArrayList<>(DUMMY_MEETINGS);
     }
+
+    /**
+     * Generates a list of dummy room data.
+     *
+     * @return a new ArrayList of rooms copied from DUMMY_ROOMS.
+     */
     static List<Room> generateRooms() {
         return new ArrayList<>(DUMMY_ROOMS);
     }
+
+    /**
+     * Generates a list of dummy user data.
+     *
+     * @return a new ArrayList of users copied from DUMMY_USERS.
+     */
     static List<User> generateUsers() {
         return new ArrayList<>(DUMMY_USERS);
     }
-
 }
-

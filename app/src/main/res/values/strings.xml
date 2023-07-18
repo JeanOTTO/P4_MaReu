@@ -23,4 +23,12 @@
     <string name="err_add_booked">La salle sélectionnée est déjà réservée pour l\'intervalle de temps choisi</string>
     <string name="err_add_emailformat">Format d\'adresse e-mail invalide</string>
     <string name="err_add_userAlreadyAdded">Participant déjà ajouté</string>
+
+    <string name="description_add_addParticipantButton">Ajouter le participant à la reunion</string>
+    <string name="description_add_createMeeting">Valider et créer la réunion</string>
+    <string name="description_list_removeMeeting">Supprimer la réunion</string>
+    <string name="description_list_addMeeting">Ajouter une réunion</string>
+    <string name="description_list_avatarMeeting">Vignette couleur de la réunion</string>
+
+
 </resources>

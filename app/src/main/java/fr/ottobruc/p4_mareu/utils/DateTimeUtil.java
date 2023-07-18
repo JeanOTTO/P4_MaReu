@@ -6,22 +6,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Utility class for handling date and time operations.
+ */
 public class DateTimeUtil {
 
+    /**
+     * Converts given date and time in string format to a Date object.
+     *
+     * @param date The date in string format
+     * @param time The time in string format
+     * @return A Date object
+     * @throws ParseException if any error occurs during the conversion
+     */
     public static Date stringsToDate(String date, String time) throws ParseException {
-
-        // Formater la chaîne de date
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Date dateDate = dateFormat.parse(date);
 
-        // Combinez la date et l'heure
         Calendar calendar = Calendar.getInstance();
         if (dateDate != null) {
             calendar.setTime(dateDate);
         }
 
         if (time != null) {
-            // Formater la chaîne de temps
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Date timeDate = timeFormat.parse(time);
 
@@ -31,10 +38,16 @@ public class DateTimeUtil {
             calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
         }
 
-        // Obtenez la date finale
         return calendar.getTime();
     }
 
+    /**
+     * Checks whether two dates are the same.
+     *
+     * @param date1 The first date
+     * @param date2 The second date
+     * @return True if both dates are the same, false otherwise
+     */
     public static boolean isSameDate(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
@@ -46,22 +59,34 @@ public class DateTimeUtil {
                 && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
     }
 
+    /**
+     * Checks if two time intervals overlap.
+     *
+     * @param start1 The start of the first interval
+     * @param end1 The end of the first interval
+     * @param start2 The start of the second interval
+     * @param end2 The end of the second interval
+     * @return True if the intervals overlap, false otherwise
+     */
     public static boolean isTimeConflict(Date start1, Date end1, Date start2, Date end2) {
         return start1.before(end2) && end1.after(start2);
     }
 
-
+    /**
+     * Compares two dates to determine if they are identical.
+     *
+     * @param date1 The first date
+     * @param date2 The second date
+     * @return True if both dates are identical, false otherwise
+     * @throws ParseException if any error occurs during the conversion
+     */
     public static Boolean compareDate(Date date1, Date date2) throws ParseException {
-
-        // Création de deux instances de Calendar
         Calendar calendar1 = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
 
-        // Attribution des valeurs des dates aux instances de Calendar
         calendar1.setTime(date1);
         calendar2.setTime(date2);
 
-        // Comparaison des jours, mois et années
         int year1 = calendar1.get(Calendar.YEAR);
         int month1 = calendar1.get(Calendar.MONTH);
         int day1 = calendar1.get(Calendar.DAY_OF_MONTH);
@@ -70,40 +95,38 @@ public class DateTimeUtil {
         int month2 = calendar2.get(Calendar.MONTH);
         int day2 = calendar2.get(Calendar.DAY_OF_MONTH);
 
-        // Comparaison des années
         if (year1 == year2) {
-            // Les années sont les mêmes, comparer les mois
             if (month1 == month2) {
-                // Les mois sont les mêmes, comparer les jours
                 return day1 == day2;
             }
         }
         return false;
     }
 
+    /**
+     * Compares two times to determine if they are identical.
+     *
+     * @param time1 The first time
+     * @param time2 The second time
+     * @return True if both times are identical, false otherwise
+     * @throws ParseException if any error occurs during the conversion
+     */
     public static Boolean compareTime(Date time1, Date time2) throws ParseException {
-
-        // Création de deux instances de Calendar
         Calendar calendar1 = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
 
-        // Attribution des valeurs des dates aux instances de Calendar
         calendar1.setTime(time1);
         calendar2.setTime(time2);
 
-        // Comparaison des jours, mois et années
         int hour1 = calendar1.get(Calendar.HOUR_OF_DAY);
         int minute1 = calendar1.get(Calendar.MINUTE);
-
 
         int hour2 = calendar2.get(Calendar.HOUR_OF_DAY);
         int minute2 = calendar2.get(Calendar.MINUTE);
 
-        // Comparaison des années
         if (hour1 == hour2) {
-            // Les années sont les mêmes, comparer les mois
             return minute1 == minute2;
-            }
+        }
         return false;
     }
 }

@@ -1,4 +1,5 @@
 package fr.ottobruc.p4_mareu.controler;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -23,6 +24,9 @@ import fr.ottobruc.p4_mareu.model.Meeting;
 import fr.ottobruc.p4_mareu.model.Room;
 import fr.ottobruc.p4_mareu.repository.MeetingRepository;
 
+/**
+ * The activity class that shows the list of meetings.
+ */
 public class ListMeetingActivity extends AppCompatActivity implements MeetingAdapter.Listener {
     private ActivityListmeetingBinding binding;
     private MeetingRepository meetingRepository;
@@ -38,6 +42,10 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
         meetingRepository = DI.getMeetingRepository();
         initList();
     }
+
+    /**
+     * Initializes the meeting list.
+     */
     public void initList() {
         meetings = meetingRepository.getMeetings();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -54,6 +62,10 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
         initList();
     }
 
+    /**
+     * Deletes the specified meeting when the delete button is clicked.
+     * @param meeting The meeting to delete
+     */
     public void onClickDelete(Meeting meeting) {
         Log.d(ListMeetingActivity.class.getName(), "User tries to delete a item.");
         meetingRepository.deleteMeeting(meeting);
@@ -77,55 +89,53 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
             return true;
         }
         if (id == R.id.action_filter_date) {
-            // Action de filtrage par date
+            // Filter action by date
             showDatePickerDialog();
             return true;
 
         } else if (id == R.id.action_filter_room) {
-            // Action de filtrage par salle
+            // Filter action by room
             showRoomFilterDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Shows a date picker dialog to filter meetings by date.
+     */
     private void showDatePickerDialog() {
-        // Obtenez la date actuelle
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Créez un sélecteur de date
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
-            // Mettez à jour la date sélectionnée
             Calendar selectedCalendar = Calendar.getInstance();
             selectedCalendar.set(selectedYear, selectedMonth, selectedDay);
             Date selectedDate = selectedCalendar.getTime();
 
-            // Filtrez les réunions en fonction de la date sélectionnée
             List<Meeting> filteredMeetings = meetingRepository.getFilteredMeetingsByDate(selectedDate);
 
-            // Mettez à jour l'adaptateur de la liste des réunions avec les réunions filtrées
             adapter.setMeetings(filteredMeetings);
             adapter.notifyDataSetChanged();
         }, year, month, day);
 
-        // Affichez le sélecteur de date
         datePickerDialog.show();
     }
 
+    /**
+     * Shows a room filter dialog to filter meetings by room.
+     */
     private void showRoomFilterDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Filtrer par salle");
 
-        // Créez un tableau de noms de salle à partir de la liste des salles disponibles
         String[] roomNames = new String[meetingRepository.getRooms().size()];
         for (int i = 0; i < meetingRepository.getRooms().size(); i++) {
             roomNames[i] = meetingRepository.getRooms().get(i).getName();
         }
 
-        // Tableau pour stocker les salles sélectionnées
         boolean[] checkedItems = new boolean[meetingRepository.getRooms().size()];
 
         builder.setMultiChoiceItems(roomNames, checkedItems, (dialog, which, isChecked) -> checkedItems[which] = isChecked);
@@ -143,6 +153,11 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
         dialog.show();
     }
 
+    /**
+     * Filters meetings by room.
+     * @param checkedItems The boolean array that indicates which rooms are selected
+     * @return The filtered meetings
+     */
     private List<Meeting> filterMeetingsByRoom(boolean[] checkedItems) {
         List<Meeting> filteredMeetings;
         filteredMeetings = new ArrayList<>();
@@ -154,5 +169,4 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
         }
         return filteredMeetings;
     }
-
 }
