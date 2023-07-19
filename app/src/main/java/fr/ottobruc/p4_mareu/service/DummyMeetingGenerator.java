@@ -70,7 +70,7 @@ public abstract class DummyMeetingGenerator {
                     new Meeting(7, "16:00", "16:45", "14/07/2023", DUMMY_ROOMS.get(6), "Réunion G", Arrays.asList(DUMMY_USERS.get(11), DUMMY_USERS.get(6))),
                     new Meeting(8, "17:00", "17:45", "14/07/2023", DUMMY_ROOMS.get(7), "Réunion H", Arrays.asList(DUMMY_USERS.get(13), DUMMY_USERS.get(0))),
                     new Meeting(9, "18:00", "18:45", "14/07/2023", DUMMY_ROOMS.get(8), "Réunion I", Arrays.asList(DUMMY_USERS.get(12), DUMMY_USERS.get(2), DUMMY_USERS.get(3))),
-                    new Meeting(10,"10:00", "10:45", "15/07/2023", DUMMY_ROOMS.get(9), "Réunion J", Arrays.asList(DUMMY_USERS.get(4), DUMMY_USERS.get(7)))
+                    new Meeting(10,"10:00", "10:45", "28/07/2023", DUMMY_ROOMS.get(9), "Réunion J", Arrays.asList(DUMMY_USERS.get(4), DUMMY_USERS.get(7)))
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);

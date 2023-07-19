@@ -53,7 +53,7 @@ public class ListMeetingActivity extends AppCompatActivity implements MeetingAda
         adapter = new MeetingAdapter(meetings, this);
         binding.meetingRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
         binding.meetingRecyclerView.setAdapter(adapter);
-        binding.createMeeting.setOnClickListener(v -> AddMeetingActivity.navigate(this));
+        binding.addMeetingButton.setOnClickListener(v -> AddMeetingActivity.navigate(this));
     }
 
     @Override
